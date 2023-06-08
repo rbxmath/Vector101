@@ -1,3 +1,5 @@
+local TOLERANCE = 1e-13 -- 1e-13 = 1 * 10^(-13) = 0.000000000001
+
 local Vector = {}
 local mt = {}
 mt.__index = Vector
@@ -51,7 +53,13 @@ function Vector.Magnitude(v)
 end
 
 function Vector.Unit(v)
-	return v / v:Magnitude()
+	local magnitude = v:Magnitude()
+
+	if magnitude > TOLERANCE then
+		return v / magnitude
+	else
+		return Vector.zero(#v)
+	end
 end
 
 function Vector.Angle(a, b)
