@@ -1,7 +1,3 @@
--- Homework:
--- Implement the cross product for 3D vectors
--- Implement getting the magnitude of a vector
-
 local Vector = {}
 local mt = {}
 mt.__index = Vector
@@ -26,6 +22,28 @@ function Vector.Dot(a, b)
 	end
 
 	return sum
+end
+
+function Vector.Cross(a, b)
+	assert(Vector.isVector(a))
+	assert(Vector.isVector(b))
+	assert(#a == 3 and #b == 3)
+
+	return Vector.new({
+		a[2] * b[3] - a[3] * b[2],
+		a[3] * b[1] - a[1] * b[3],
+		a[1] * b[2] - a[2] * b[1],
+	})
+end
+
+function Vector.Magnitude(v)
+	local sum = 0
+
+	for _, coordinate in v do
+		sum += coordinate * coordinate
+	end
+
+	return math.sqrt(sum)
 end
 
 function mt.__add(a, b)
