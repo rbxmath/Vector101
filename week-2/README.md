@@ -15,8 +15,7 @@
     * `Subspace:ProjectVector()`: Returns the projection of a vector onto the subspace
 
 ## Homework
-You are strongly encouraged to retry the lecture activities on your own first!
-
+You may start from the provided code, but you are strongly encouraged to redo the lecture activities on your own!
 * Add a `Subspace:Contains()` method that checks if the subspace contains a vector
 * Put `n+1` vectors of dimension `n` into Gram-Schmidt. Do this for different values of `n`. What do you observe? Can you explain why this happens?
 * **Optional:** Expand on the sample unit tests provided. Add unit tests for Subspace
