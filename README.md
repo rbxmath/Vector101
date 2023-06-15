@@ -6,7 +6,7 @@ Each week has two folders: The `lecture` folder contains code presented during l
 Lecture code will be uploaded before lecture. Homework solutions will be uploaded a week after the lecture from which they were assigned.
 
 ## Upload status
-| Week | Lecture code | Completed homework |
+| Week | Lecture code | Homework solutions |
 | --- | --- | --- |
 | 1 | ✓ | ✓ |
 | 2 | ✓ | ✓ |
