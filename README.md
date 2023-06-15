@@ -7,7 +7,7 @@ Lecture code will be uploaded before lecture. Homework solutions will be uploade
 
 ## Upload status
 | Week | Lecture code | Homework solutions |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | 1 | ✓ | ✓ |
 | 2 | ✓ | ✓ |
 | 3 | | |
