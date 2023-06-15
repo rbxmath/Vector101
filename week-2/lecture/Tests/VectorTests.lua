@@ -105,7 +105,7 @@ for testName, testFunction in VectorTests do
 	local ok, message = pcall(testFunction)
 
 	if ok then
-		print("[SUCCESS] VectorTests." .. testName)
+		print("[PASS] VectorTests." .. testName)
 	else
 		print("[FAIL] VectorTests." .. testName .. ": " .. message)
 	end

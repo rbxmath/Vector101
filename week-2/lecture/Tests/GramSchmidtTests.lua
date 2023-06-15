@@ -66,7 +66,7 @@ for testName, testFunction in GramSchmidtTests do
 	local ok, message = pcall(testFunction)
 
 	if ok then
-		print("[SUCCESS] GramSchmidtTests." .. testName)
+		print("[PASS] GramSchmidtTests." .. testName)
 	else
 		print("[FAIL] GramSchmidtTests." .. testName .. ": " .. message)
 	end
