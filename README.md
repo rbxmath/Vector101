@@ -9,7 +9,7 @@ Lecture code will be uploaded before lecture. Completed homework exercises will 
 | Week | Lecture code | Completed homework |
 | --- | --- | --- |
 | 1 | ✓ | ✓ |
-| 2 | ✓ | |
+| 2 | ✓ | ✓ |
 | 3 | | |
 | 4 | | |
 | 5 | | |
