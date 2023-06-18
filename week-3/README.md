@@ -29,4 +29,4 @@ Show that
 ```math
 \begin{pmatrix} T_{11} + S_{11} & \cdots & T_{1n} + S_{1n} \\ \vdots & \ddots & \vdots \\ T_{m1} + S_{m1} & \cdots & T_{mn} + S_{mn}\end{pmatrix}.
 ```
-Here is a similar proof as an example.
+[Here is a similar proof](https://github.com/rbxmath/Vector101/blob/main/week-3/lecture/homework-example.pdf) as an example.
