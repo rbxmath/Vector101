@@ -13,12 +13,12 @@ local Matrix = require("Matrix")
 local TOLERANCE = 1e-13
 
 -- Partial pivoting
-local function getRowWithLargestPivot(matrix, i)
-	local pivotRowIndex = i
-	local maxPivotMagnitude = math.abs(matrix[i][i])
+local function getBestRow(matrix, pivotRowIndex, pivotColIndex)
+	local pivot = matrix[pivotRowIndex][pivotColIndex]
+	local maxPivotMagnitude = math.abs(pivot)
 
-	for j = i + 1, matrix.rows do
-		local pivotMagnitude = math.abs(matrix[j][i])
+	for j = pivotRowIndex + 1, matrix.rows do
+		local pivotMagnitude = math.abs(matrix[j][pivotColIndex])
 
 		if pivotMagnitude > maxPivotMagnitude then
 			pivotRowIndex = j
@@ -29,9 +29,9 @@ local function getRowWithLargestPivot(matrix, i)
 	return pivotRowIndex
 end
 
-local function eliminateRow(pivotRow, victimRow, i)
-	local pivot = pivotRow[i]
-	local victimEntry = victimRow[i]
+local function eliminateRow(pivotRow, victimRow, pivotColIndex)
+	local pivot = pivotRow[pivotColIndex]
+	local victimEntry = victimRow[pivotColIndex]
 
 	-- Early exit: Nothing to eliminate
 	if victimEntry == 0 then
@@ -40,7 +40,7 @@ local function eliminateRow(pivotRow, victimRow, i)
 
 	local scaleFactor = victimEntry / pivot
 
-	for k = i, #victimRow do
+	for k = pivotColIndex, #victimRow do
 		victimRow[k] -= scaleFactor * pivotRow[k]
 
 		if math.abs(victimRow[k]) < TOLERANCE then
@@ -53,39 +53,44 @@ local function RowReduce(matrix)
 	matrix = Matrix.copy(matrix)
 	print(matrix)
 
-	for i = 1, math.min(matrix.rows, matrix.cols) do
-		print(i)
+	local pivotRowIndex = 1
+	local pivotColIndex = 1
+
+	while pivotRowIndex <= matrix.rows and pivotColIndex <= matrix.cols do
+		print("pivotRowIndex:", pivotRowIndex, "pivotCol:", pivotColIndex)
 		-- Partial pivoting
-		local pivotRowIndex = getRowWithLargestPivot(matrix, i)
+		local bestRowIndex = getBestRow(matrix, pivotRowIndex, pivotColIndex)
 
 		-- Swap pivot row if needed
-		if pivotRowIndex ~= i then
-			print("swapping " .. i .. " with " .. pivotRowIndex)
-			matrix[i], matrix[pivotRowIndex] = matrix[pivotRowIndex], matrix[i]
+		if bestRowIndex ~= pivotRowIndex then
+			print("swapping " .. pivotRowIndex .. " with " .. bestRowIndex)
+			matrix[pivotRowIndex], matrix[bestRowIndex] = matrix[bestRowIndex], matrix[pivotRowIndex]
 		end
 
-		local pivotRow = matrix[i]
-		local pivot = pivotRow[i]
+		local pivotRow = matrix[pivotRowIndex]
+		local pivot = pivotRow[pivotColIndex]
 
 		-- Early exit: Nothing to eliminate
 		if pivot == 0 then
+			pivotColIndex += 1
 			print("skipping due to 0 pivot")
 			continue
 		end
 
-		-- Eliminate
+		-- Eliminate other rows
 		for j = 1, matrix.rows do
-			if i == j then
-				continue
+			if j ~= pivotRowIndex then
+				eliminateRow(pivotRow, matrix[j], pivotColIndex)
 			end
-
-			eliminateRow(pivotRow, matrix[j], i)
 		end
 
 		-- Normalize the pivot row
-		for k = i, matrix.cols do
+		for k = pivotRowIndex, matrix.cols do
 			pivotRow[k] /= pivot
 		end
+
+		pivotRowIndex += 1
+		pivotColIndex += 1
 
 		print("done")
 		print(matrix)
