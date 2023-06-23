@@ -11,7 +11,7 @@ Implement a Matrix class supporting the following operations for matrices of any
 
 ## Homework
 1. Write your own Matrix class. Try it without looking at the lecture code first!
-2. In this exercise, you will prove why the sum of two matrices is defined by summing entrywise. [(solution)](week-3/homework/homework-solution.pdf)
+2. In this exercise, you will prove why the sum of two matrices is defined by summing entrywise. [(solution)](homework/homework-solution.pdf)
 
 Let $T:\mathbb{R}^n\to \mathbb{R}^m$ and $S:\mathbb{R}^n\to\mathbb{R}^m$ be linear transformations represented by the matrices
 ```math
