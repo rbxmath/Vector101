@@ -1,28 +1,25 @@
+--[[
+
+Matrix format:
+{
+	{a11, a12, ..., a1n},
+ 	{a21, a22, ..., a2n},
+ 	...
+ 	{am1, am2, ..., amn}
+ }
+
+--]]
+
 local Matrix = {}
 Matrix.__index = Matrix
 
-local function isInteger(x)
-	return type(x) == "number" and x % 1 == 0
+function Matrix.isMatrix(matrix)
+	return getmetatable(matrix) == Matrix
 end
 
 function Matrix.new(matrix: { { number } })
 	local rows = #matrix
-
-	assert(rows > 0)
-
-	for _, row in matrix do
-		assert(typeof(row) == "table")
-	end
-
 	local cols = #matrix[1]
-
-	for _, row in matrix do
-		assert(#row == cols)
-
-		for _, number in row do
-			assert(type(number) == "number")
-		end
-	end
 
 	local copy = table.clone(matrix)
 	copy.rows = rows
@@ -31,37 +28,8 @@ function Matrix.new(matrix: { { number } })
 	return setmetatable(copy, Matrix)
 end
 
-function Matrix.zero(rows: number, cols: number)
-	assert(isInteger(rows) and rows > 0)
-	assert(isInteger(cols) and cols > 0)
-
-	local matrix = table.create(rows)
-
-	for i = 1, rows do
-		matrix[i] = table.create(cols, 0)
-	end
-
-	matrix.rows = rows
-	matrix.cols = cols
-
-	return setmetatable(matrix, Matrix)
-end
-
-function Matrix.id(n: number)
-	assert(isInteger(n) and n > 0)
-
-	local matrix = table.create(n)
-
-	for i = 1, n do
-		local row = table.create(n, 0)
-		row[i] = 1
-		matrix[i] = row
-	end
-
-	matrix.rows = n
-	matrix.cols = n
-
-	return setmetatable(matrix, Matrix)
+local function isInteger(x)
+	return type(x) == "number" and x % 1 == 0
 end
 
 -- Used internally when performing matrix operations
@@ -79,36 +47,6 @@ function Matrix.empty(rows: number, cols: number)
 	matrix.cols = cols
 
 	return setmetatable(matrix, Matrix)
-end
-
-function Matrix.isMatrix(matrix)
-	return getmetatable(matrix) == Matrix
-end
-
-function Matrix.copy(matrix)
-	assert(Matrix.isMatrix(matrix))
-
-	local copy = Matrix.empty(matrix.rows, matrix.cols)
-
-	for i = 1, matrix.rows do
-		for j = 1, matrix.cols do
-			copy[i][j] = matrix[i][j]
-		end
-	end
-
-	return copy
-end
-
-function Matrix:Transpose()
-	local matrix = Matrix.empty(self.cols, self.rows)
-
-	for i = 1, matrix.rows do
-		for j = 1, matrix.cols do
-			matrix[i][j] = self[j][i]
-		end
-	end
-
-	return matrix
 end
 
 function Matrix.__add(a, b)
@@ -157,21 +95,6 @@ function Matrix.__unm(matrix)
 	return newMatrix
 end
 
-function Matrix.__div(matrix, scalar)
-	assert(Matrix.isMatrix(matrix))
-	assert(type(scalar) == "number")
-
-	local newMatrix = Matrix.empty(matrix.rows, matrix.cols)
-
-	for i, row in ipairs(matrix) do
-		for j, element in ipairs(row) do
-			newMatrix[i][j] = element / scalar
-		end
-	end
-
-	return newMatrix
-end
-
 function Matrix.__mul(a, b)
 	if Matrix.isMatrix(a) and type(b) == "number" then
 		local newMatrix = Matrix.empty(a.rows, a.cols)
@@ -214,6 +137,21 @@ function Matrix.__mul(a, b)
 	else
 		error("Bad inputs")
 	end
+end
+
+function Matrix.__div(matrix, scalar)
+	assert(Matrix.isMatrix(matrix))
+	assert(type(scalar) == "number")
+
+	local newMatrix = Matrix.empty(matrix.rows, matrix.cols)
+
+	for i, row in ipairs(matrix) do
+		for j, element in ipairs(row) do
+			newMatrix[i][j] = element / scalar
+		end
+	end
+
+	return newMatrix
 end
 
 function Matrix.__eq(a, b)
