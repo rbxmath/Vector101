@@ -9,7 +9,7 @@
 * Matrix-vector multiplication
 * `Matrix:Transpose()`: Transposes a matrix
 * `Matrix.copy(matrix)`: Constructor that returns a copy of a matrix
-* Matrix.zero(rows, cols)`: Constructor that returns a matrix of 0s
+* `Matrix.zero(rows, cols)`: Constructor that returns a matrix of 0s
 * `Matrix.id(n)`: Constructor that returns an nxn identity matrix
  
 2. Create a CFrame `A` and a matrix `M` such that the columns of `M` are `A.RightVector`, `A.UpVector`, and `-A.LookVector`:
