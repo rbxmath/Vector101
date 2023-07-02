@@ -24,4 +24,4 @@ Or in math typesetting,
 ```math
 M = \begin{pmatrix} Right.X & Up.X & -Look.X \\ Right.Y & Up.Y & -Look.Y \\ Right.Z & Up.Z & -Look.Z \end{pmatrix}.
 ```
-Do the same for a CFrame `B` and matrix `N`. Now compare the right/up/look vectors of the CFrame `A*B` with the columns of the matrix `M*N`. What do you notice?
+Do the same for a CFrame `B` and matrix `N`. Now compare the right/up/-look vectors of the CFrame `A*B` with the columns of the matrix `M*N`. What do you notice?
