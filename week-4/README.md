@@ -6,7 +6,7 @@
 
 ## Homework
 1. Add the following methods to your Matrix class:
-* Matrix-vector multiplication
+* Matrix-matrix multiplication
 * `Matrix:Transpose()`: Transposes a matrix
 * `Matrix.copy(matrix)`: Constructor that returns a copy of a matrix
 * `Matrix.zero(rows, cols)`: Constructor that returns a matrix of 0s
