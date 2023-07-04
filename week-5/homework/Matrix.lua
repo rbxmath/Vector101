@@ -1,3 +1,5 @@
+local Vector = require("Vector")
+
 local Matrix = {}
 Matrix.__index = Matrix
 
@@ -32,7 +34,7 @@ local function isInteger(x)
 	return type(x) == "number" and x % 1 == 0
 end
 
--- Creates a matrix of all 0s
+-- Creates a matrix of all zeros
 function Matrix.zero(rows: number, cols: number)
 	assert(isInteger(rows) and rows > 0)
 	assert(isInteger(cols) and cols > 0)
@@ -49,8 +51,8 @@ function Matrix.zero(rows: number, cols: number)
 	return setmetatable(matrix, Matrix)
 end
 
--- Creates an identity matrix, i.e., a square n x n matrix of all 0s but with 1s
--- along the diagonal
+-- Creates an identity matrix, i.e., a square n x n matrix of all zeros but with
+-- ones along the diagonal
 function Matrix.id(n: number)
 	assert(isInteger(n) and n > 0)
 
@@ -81,6 +83,22 @@ function Matrix.empty(rows: number, cols: number)
 
 	matrix.rows = rows
 	matrix.cols = cols
+
+	return setmetatable(matrix, Matrix)
+end
+
+-- Creates a column matrix from a vector
+function Matrix.fromVector(vector)
+	assert(Vector.isVector(vector))
+
+	local matrix = table.create(#vector)
+
+	for i, coordinate in vector do
+		matrix[i] = { coordinate }
+	end
+
+	matrix.rows = #vector
+	matrix.cols = 1
 
 	return setmetatable(matrix, Matrix)
 end
@@ -117,6 +135,28 @@ function Matrix:Transpose()
 	end
 
 	return matrix
+end
+
+-- Appends a matrix of the same height to the right side of the current matrix
+function Matrix:AugmentWith(matrix)
+	assert(Matrix.isMatrix(matrix))
+	assert(matrix.rows == self.rows)
+
+	local augmentedMatrix = Matrix.empty(self.rows, self.cols + matrix.cols)
+
+	for i = 1, self.rows do
+		for j = 1, self.cols do
+			augmentedMatrix[i][j] = self[i][j]
+		end
+	end
+
+	for i = 1, matrix.rows do
+		for j = 1, matrix.cols do
+			augmentedMatrix[i][self.cols + j] = matrix[i][j]
+		end
+	end
+
+	return augmentedMatrix
 end
 
 -- Sums matrices entrywise
