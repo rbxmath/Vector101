@@ -264,6 +264,22 @@ function Matrix.__mul(a, b)
 		end
 
 		return newMatrix
+	elseif Matrix.isMatrix(a) and Vector.isVector(b) then
+		assert(a.cols == #b)
+
+		local coordinates = table.create(a.rows)
+
+		for i = 1, a.rows do
+			local sum = 0
+
+			for j = 1, a.cols do
+				sum += a[i][j] * b[j]
+			end
+
+			coordinates[i] = sum
+		end
+
+		return Vector.new(coordinates)
 	else
 		error("Bad inputs")
 	end
