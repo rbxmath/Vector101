@@ -361,6 +361,57 @@ function Matrix:PowerMethod()
 	return getEigenvalueFromEigenvector(self, eigenvector), eigenvector
 end
 
+-- Computes the Frobenius norm of the matrix
+function Matrix:FrobeniusNorm()
+	local sum = 0
+
+	for i = 1, self.rows do
+		for j = 1, self.cols do
+			sum += self[i][j] ^ 2
+		end
+	end
+
+	return math.sqrt(sum)
+end
+
+-- Returns a submatrix
+function Matrix:Submatrix(topLeftRow, topLeftCol, bottomRightRow, bottomRightCol)
+	assert(isInteger(topLeftRow) and topLeftRow >= 1 and topLeftRow <= self.rows)
+	assert(isInteger(topLeftCol) and topLeftCol >= 1 and topLeftCol <= self.cols)
+	assert(isInteger(bottomRightRow) and bottomRightRow >= topLeftRow and bottomRightRow <= self.rows)
+	assert(isInteger(bottomRightCol) and bottomRightCol >= topLeftCol and bottomRightCol <= self.cols)
+
+	local rows = bottomRightRow - topLeftRow + 1
+	local cols = bottomRightCol - topLeftCol + 1
+
+	local matrix = Matrix.empty(rows, cols)
+
+	for i = 1, rows do
+		for j = 1, cols do
+			matrix[i][j] = self[i + topLeftRow - 1][j + topLeftCol - 1]
+		end
+	end
+
+	return matrix
+end
+
+-- Computes the inverse of the matrix via row reduction
+function Matrix:Inverse()
+	assert(self.rows == self.cols)
+
+	local augmentedMatrix = self:AugmentWith(Matrix.id(self.rows))
+	local reduced = augmentedMatrix:RowReduce()
+	local left = reduced:Submatrix(1, 1, self.rows, self.rows)
+	local right = reduced:Submatrix(1, self.rows + 1, self.rows, 2 * self.rows)
+
+	-- if (left - Matrix.id(self.rows)):FrobeniusNorm() < 1e-13 then
+	if left == Matrix.id(self.rows) then
+		return right
+	else
+		return nil
+	end
+end
+
 -- Sums matrices entrywise
 function Matrix.__add(a, b)
 	assert(Matrix.isMatrix(a))
@@ -494,8 +545,8 @@ function Matrix.__eq(a, b)
 	assert(a.rows == b.rows)
 	assert(a.cols == b.cols)
 
-	for i = 1, #a.rows do
-		for j = 1, #a.cols do
+	for i = 1, a.rows do
+		for j = 1, a.cols do
 			if a[i][j] ~= b[i][j] then
 				return false
 			end
