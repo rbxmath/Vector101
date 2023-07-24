@@ -404,12 +404,49 @@ function Matrix:Inverse()
 	local left = reduced:Submatrix(1, 1, self.rows, self.rows)
 	local right = reduced:Submatrix(1, self.rows + 1, self.rows, 2 * self.rows)
 
-	-- if (left - Matrix.id(self.rows)):FrobeniusNorm() < 1e-13 then
 	if left == Matrix.id(self.rows) then
 		return right
 	else
 		return nil
 	end
+end
+
+-- Returns the submatrix with the first row and excludedCol column removed
+local function getPrincipalSubmatrix(matrix, excludedCol)
+	local n = matrix.rows - 1
+	local principalSubmatrix = Matrix.empty(n, n)
+
+	for i = 1, n do
+		for j = 1, n do
+			local row = i + 1
+			local col = j + (j >= excludedCol and 1 or 0)
+			principalSubmatrix[i][j] = matrix[row][col]
+		end
+	end
+
+	return principalSubmatrix
+end
+
+-- Computes the determinant by performing cofactor expansion on the first row
+function Matrix:Determinant(): number
+	assert(self.rows == self.cols)
+
+	-- Base cases
+	if self.rows == 1 then
+		return self[1][1]
+	elseif self.rows == 2 then
+		return self[1][1] * self[2][2] - self[1][2] * self[2][1]
+	end
+
+	local determinant = 0
+
+	for col = 1, self.cols do
+		local principalSubmatrix = getPrincipalSubmatrix(self, col)
+		local sign = col % 2 == 0 and -1 or 1
+		determinant += sign * self[1][col] * principalSubmatrix:Determinant()
+	end
+
+	return determinant
 end
 
 -- Sums matrices entrywise
