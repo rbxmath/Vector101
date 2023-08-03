@@ -61,4 +61,26 @@ function AffineMap.__mul(a, b)
 	end
 end
 
+function AffineMap.__add(a, b)
+	-- AffineMap + AffineMap
+	if AffineMap.isAffineMap(a) and AffineMap.isAffineMap(b) then
+		local matrix = Matrix.__add(a, b)
+		matrix[4][4] = 1
+		return setmetatable(matrix, AffineMap)
+	else
+		return Matrix.__add(a, b)
+	end
+end
+
+function AffineMap.__sub(a, b)
+	-- AffineMap - AffineMap
+	if AffineMap.isAffineMap(a) and AffineMap.isAffineMap(b) then
+		local matrix = Matrix.__sub(a, b)
+		matrix[4][4] = 1
+		return setmetatable(matrix, AffineMap)
+	else
+		return Matrix.__sub(a, b)
+	end
+end
+
 return AffineMap
