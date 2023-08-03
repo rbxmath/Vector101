@@ -123,7 +123,9 @@ end
 
 -- Checks whether the input is a Matrix object
 function Matrix.isMatrix(matrix)
-	return getmetatable(matrix) == Matrix
+	-- Jank: This lets us multiply Matrices and AffineMaps
+	local mt = getmetatable(matrix)
+	return rawequal(mt, Matrix) or rawequal(getmetatable(mt), Matrix)
 end
 
 -- Flips rows and columns such that the first row becomes the first column,
