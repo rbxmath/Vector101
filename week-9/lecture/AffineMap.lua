@@ -43,12 +43,12 @@ function AffineMap:ToCFrame()
 	return CFrame.new(
 		-- Position
 		self[1][4], self[2][4], self[3][4],
-		-- RightVector
-		self[1][1], self[2][1], self[3][1],
-		-- UpVector
-		self[1][2], self[2][2], self[3][2],
-		-- -LookVector
-		self[1][3], self[2][3], self[3][3]
+		-- First row
+		self[1][1], self[1][2], self[1][3],
+		-- Second row
+		self[2][1], self[2][2], self[2][3],
+		-- -Third row
+		self[3][1], self[3][2], self[3][3]
 	)
 end
 
