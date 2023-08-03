@@ -16,5 +16,5 @@ Lecture code will be uploaded before lecture. Homework solutions will be uploade
 | 6 | ✓ | ✓ |
 | 7 | ✓ | ✓ |
 | 8 | ✓ | ✓ |
-| 9 | | |
+| 9 | ✓ | ✓ |
 | 10 | | |
